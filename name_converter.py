@@ -1,5 +1,6 @@
 import csv
 import sys
+import tkinter as tk
 
 csv_input_file = sys.argv[1]
 csv_output_file = sys.argv[2]
@@ -19,25 +20,26 @@ def write_anonymized_row(csv_writer, row):
 	# Write the row
 	csv_writer.writerow({'id': id, 'first_name': first_name, 'last_name': last_name, 'phone': phone})
 
+def main():
+	window = tk.Tk()
+	window.title("Data Anonymizer")
 
+	with open(csv_input_file) as csv_input:
+		csv_reader = csv.DictReader(csv_input)
 
-with open(csv_input_file) as csv_input:
-	csv_reader = csv.DictReader(csv_input)
+		# Grab the header
+		header = csv_reader.fieldnames
 
-	# Grab the header
-	header = csv_reader.fieldnames
+		with open(csv_output_file, 'w') as csv_output:
+			csv_writer = csv.DictWriter(csv_output, fieldnames=header)
 
-	with open(csv_output_file, 'w') as csv_output:
-		csv_writer = csv.DictWriter(csv_output, fieldnames=header)
+			# Write the header to a new file
+			csv_writer.writeheader()
 
-		# Write the header to a new file
-		csv_writer.writeheader()
+			# For each row in the original file, anonymize the data and write to a new file
+			for i, row in enumerate(csv_reader):
+				write_anonymized_row(csv_writer, row)
 
-		# For each row in the original file, anonymize the data and write to a new file
-		for i, row in enumerate(csv_reader):
-			write_anonymized_row(csv_writer, row)
+	window.mainloop()
 
-
-
-
-
+main()
