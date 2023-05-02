@@ -44,7 +44,7 @@ class DataAnonymizer:
 				for i, row in enumerate(csv_reader):
 					self.write_anonymized_row(csv_writer, row)
 
-class MyGUI():
+class MyGUI:
 	def __init__(self, root, anonymizer):
 		self.root = root
 		self.anonymizer = anonymizer
@@ -86,7 +86,6 @@ class MyGUI():
 	def select_destination(self):
 		self.anonymizer.output_path = tk.filedialog.askdirectory()
 		self.destination_label.config(text="Output File path: " + self.anonymizer.output_path)
-
 
 def main():
 	root = tk.Tk()
