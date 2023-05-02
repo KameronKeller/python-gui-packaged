@@ -4,9 +4,10 @@ import tkinter as tk
 import tkinter.filedialog
 
 class DataAnonymizer:
-	def __init__(self, csv_input_file='', csv_output_file=''):
+	def __init__(self, csv_input_file='', output_name='', output_path=''):
 		self.csv_input_file = csv_input_file
-		self.csv_output_file = csv_output_file
+		self.output_name = output_name
+		self.output_path = output_path
 
 	def anonymize_name(self, name):
 		return name[0] + '.'
@@ -30,7 +31,10 @@ class DataAnonymizer:
 			# Grab the header
 			header = csv_reader.fieldnames
 
-			with open(self.csv_output_file, 'w') as csv_output:
+			# Combine the desired file name with the desired output path
+			file_output = self.output_path + '/' + self.output_name
+
+			with open(file_output, 'w') as csv_output:
 				csv_writer = csv.DictWriter(csv_output, fieldnames=header)
 
 				# Write the header to a new file
@@ -50,10 +54,16 @@ class MyGUI():
 		self.open_file_button = tk.Button(text="Select CSV File", command=self.open_file)
 		self.open_file_button.pack()
 
-		self.path_label = tk.Label(self.root, text="No file selected")
-		self.path_label.pack()
+		self.input_label = tk.Label(self.root, text="No file selected")
+		self.input_label.pack()
 
-		self.output_entry = tk.Entry(self.root, textvariable=self.anonymizer.csv_output_file)
+		self.destination_button = tk.Button(text="Select Destination", command=self.select_destination)
+		self.destination_button.pack()
+
+		self.destination_label = tk.Label(self.root, text="No destination selected")
+		self.destination_label.pack()
+
+		self.output_entry = tk.Entry(self.root, textvariable=self.anonymizer.output_name)
 		self.output_entry.pack()
 
 		self.output_submit_button = tk.Button(text="Save", command=self.set_output_path)
@@ -66,12 +76,17 @@ class MyGUI():
 		self.go_button.pack()
 
 	def set_output_path(self):
-		self.anonymizer.csv_output_file = self.output_entry.get()
-		self.output_label.config(text="Output name: " + self.anonymizer.csv_output_file)
+		self.anonymizer.output_name = self.output_entry.get()
+		self.output_label.config(text="Output name: " + self.anonymizer.output_name)
 
 	def open_file(self):
 		self.anonymizer.csv_input_file = tk.filedialog.askopenfilename()
-		self.path_label.config(text="File path: " + self.anonymizer.csv_input_file)
+		self.input_label.config(text="Input File path: " + self.anonymizer.csv_input_file)
+
+	def select_destination(self):
+		self.anonymizer.output_path = tk.filedialog.askdirectory()
+		self.destination_label.config(text="Output File path: " + self.anonymizer.output_path)
+
 
 def main():
 	root = tk.Tk()
