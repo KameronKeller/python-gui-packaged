@@ -1,9 +1,10 @@
 import csv
 import sys
 import tkinter as tk
+import tkinter.filedialog
 
-csv_input_file = sys.argv[1]
-csv_output_file = sys.argv[2]
+csv_path = ""
+window = ""
 
 def anonymize_name(name):
 	return name[0] + '.'
@@ -20,10 +21,7 @@ def write_anonymized_row(csv_writer, row):
 	# Write the row
 	csv_writer.writerow({'id': id, 'first_name': first_name, 'last_name': last_name, 'phone': phone})
 
-def main():
-	window = tk.Tk()
-	window.title("Data Anonymizer")
-
+def anonymize_data(csv_input_file, csv_output_file):
 	with open(csv_input_file) as csv_input:
 		csv_reader = csv.DictReader(csv_input)
 
@@ -39,6 +37,36 @@ def main():
 			# For each row in the original file, anonymize the data and write to a new file
 			for i, row in enumerate(csv_reader):
 				write_anonymized_row(csv_writer, row)
+
+
+def open_file():
+	global csv_path
+	csv_path = tk.filedialog.askopenfilename()
+	print(csv_path)
+	label = tk.Label(window, textvariable=csv_path)
+	label.pack()
+	# return filepath
+
+def main():
+	global csv_path
+	global window
+	csv_input_file = sys.argv[1]
+	csv_output_file = sys.argv[2]
+
+	window = tk.Tk()
+	window.title("Data Anonymizer")
+	window.minsize(500,500)
+
+
+
+	button = tk.Button(text="Select CSV File",command=open_file)
+	button.pack()
+
+
+
+	csv_input_file = sys.argv[1]
+	csv_output_file = sys.argv[2]
+	anonymize_data(csv_input_file, csv_output_file)
 
 	window.mainloop()
 
