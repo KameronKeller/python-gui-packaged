@@ -1,5 +1,7 @@
 import csv
 import sys
+import tkinter as tk
+import tkinter.filedialog
 
 class DataAnonymizer:
 	def __init__(self, csv_input_file='', csv_output_file=''):
@@ -51,7 +53,7 @@ class MyGUI():
 		self.path_label = tk.Label(self.root, text="No file selected")
 		self.path_label.pack()
 
-		self.output_entry = tk.Entry(self.root, textvariable=self.output_path)
+		self.output_entry = tk.Entry(self.root, textvariable=self.anonymizer.csv_output_file)
 		self.output_entry.pack()
 
 		self.output_submit_button = tk.Button(text="Save", command=self.set_output_path)
@@ -69,7 +71,7 @@ class MyGUI():
 
 	def open_file(self):
 		self.anonymizer.csv_input_file = tk.filedialog.askopenfilename()
-		self.path_label.config(text="File path: " + self.self.anonymizer.csv_input_file)
+		self.path_label.config(text="File path: " + self.anonymizer.csv_input_file)
 
 def main():
 	root = tk.Tk()
@@ -78,7 +80,7 @@ def main():
 
 	data_anonymizer = DataAnonymizer()
 
-	app = MyApp(root, data_anonymizer)
+	app = MyGUI(root, data_anonymizer)
 	root.mainloop()
 
 main()
