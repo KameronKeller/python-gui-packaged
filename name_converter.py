@@ -66,7 +66,7 @@ class MyGUI:
 		self.output_entry = tk.Entry(self.root, textvariable=self.anonymizer.output_name)
 		self.output_entry.pack()
 
-		self.output_submit_button = tk.Button(text="Save", command=self.set_output_path)
+		self.output_submit_button = tk.Button(text="Set Output Filename", command=self.set_output_path)
 		self.output_submit_button.pack()
 
 		self.output_label = tk.Label(self.root, text='Output name: ')
